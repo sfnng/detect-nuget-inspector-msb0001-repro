@@ -21,6 +21,17 @@ steps:
         script: |
           nuget restore src\DummyLib\DummyLib.csproj -Verbosity detailed
 
+    - task: PowerShell@2
+      displayName: 'Remove project.assets.json to force nuget.g.props code path'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $assets = Get-ChildItem -Path . -Recurse -Filter "project.assets.json" -ErrorAction SilentlyContinue
+          foreach ($f in $assets) {
+            Write-Host "Removing: $($f.FullName)"
+            Remove-Item $f.FullName -Force
+          }
+
     - task: JavaToolInstaller@0
       displayName: 'Use Java 17 (OpenJDK 64-bit)'
       inputs:
