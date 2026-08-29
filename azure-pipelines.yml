@@ -9,17 +9,17 @@ variables:
      POLARIS_SERVER_URL: $(POLARIS_SERVER_URL)
      POLARIS_ACCESS_TOKEN: $(POLARIS_ACCESS_TOKEN)
 steps:
-    - task: UseDotNet@2
-      displayName: 'Install .NET SDK'
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet CLI'
       inputs:
-        packageType: 'sdk'
-        version: '8.x'
+        versionSpec: '6.x'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet restore (generates obj/nuget.g.props)'
+    - task: PowerShell@2
+      displayName: 'nuget restore (generates obj/nuget.g.props for .NET Framework PackageReference)'
       inputs:
-        command: 'restore'
-        projects: 'src/DummyLib/DummyLib.csproj'
+        targetType: 'inline'
+        script: |
+          nuget restore src\DummyLib\DummyLib.csproj -Verbosity detailed
 
     - task: JavaToolInstaller@0
       displayName: 'Use Java 17 (OpenJDK 64-bit)'
