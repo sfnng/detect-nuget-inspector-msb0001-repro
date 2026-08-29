@@ -1,0 +1,29 @@
+trigger:
+  - main
+
+pool:
+  ##vmImage: ubuntu-latest
+  vmImage: 'windows-2022'
+  
+variables:
+     POLARIS_SERVER_URL: $(POLARIS_SERVER_URL)
+     POLARIS_ACCESS_TOKEN: $(POLARIS_ACCESS_TOKEN)
+steps:
+    - task: JavaToolInstaller@0
+      displayName: 'Use Java 17 (OpenJDK 64-bit)'
+      inputs:
+        versionSpec: '17'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'PreInstalled'
+
+    - task: BlackDuckSecurityScan@2
+      inputs:
+        scanType: 'polaris'
+        polarisServerUrl: 'https://poc.polaris.blackduck.com'
+        polarisAccessToken: 'rvb1uibn0h59d9e6tnba154881gop03fidu4n0kn6nl8spfgdhe9rtjebb63p1dhfk89so4u0i2v0'
+        polarisAssessmentTypes: 'SCA'
+        polarisTestScaType: 'SCA-PACKAGE'
+        polarisApplicationName: 'norm_test'
+        polarisProjectName: 'BridgeTest'
+        polarisBranchName: 'main'
+        polarisIncludeDiagnostics: true

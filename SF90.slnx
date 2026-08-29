@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/DummyLib/DummyLib.csproj" />
+  <Project Path="src/SampleApp/SampleApp.vcxproj" />
+  <Project Path="src/SampleLib/SampleLib.vcxproj" />
+</Solution>
